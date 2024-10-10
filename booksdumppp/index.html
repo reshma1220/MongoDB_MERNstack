@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bookstore Home</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="logo">
+          <a href="index.html" style="font-family: Verdana, Geneva, Tahoma, sans-serif;">BookHub</a>
+        </div>
+        <ul class="nav-links">
+          <a href="#Featured">Books</a>
+          <a href="register.html">Register</a>
+          <a href="#customer-reviews">Reviews</a>
+          <a href="cart.html">Cart<span id="cart-count"></span></a>
+          <a href="order-history.html">My Orders</a>
+        </ul>
+      </nav>
+    </header>
+    <section class="header">
+      <div class="header-content">
+        <h1>Hello there, I'm BookHub!!!</h1>
+        <p>THE BEST AND YOUR PERFECT TRAVEL COMPANION.</p>
+        <a href="allbooks.html" class="cta-button" onclick="navigateTo('allbooks.html')">Let's goooo :)</a>
+      </div>
+    </section>
+    <section id="Featured" class="Featured">
+      <h2>Select your favourite genre.</h2>
+      <div class="book-grid">
+        <a href="category.html?category=fiction" class="book-card">
+          <img src="images/fiction.jpg" alt="Fiction Books" />
+          <h3>Fiction</h3>
+        </a>
+        <a href="category.html?category=nonfiction" class="book-card">
+          <img src="images/nonfiction.jpg" alt="Non-Fiction Books" />
+          <h3>Non-Fiction</h3>
+        </a>
+        <a href="category.html?category=comics" class="book-card">
+          <img src="images/comics.jpg" alt="Comics & Graphic Novels" />
+          <h3>Comics & Graphics</h3>
+        </a>
+        <a href="category.html?category=children" class="book-card">
+          <img src="children.png" alt="Children's Books" />
+          <h3>Children's Books</h3>
+        </a>
+        <a href="category.html?category=education" class="book-card">
+          <img src="images/education.jpg" alt="Educational Books" />
+          <h3>Educational Books</h3>
+        </a>
+      </div>
+    </section>
+
+    <section id="customer-reviews" class="customer-reviews-container">
+      <div class="customer-reviews">
+        <h2>Customer Reviews</h2>
+
+        <div class="review">
+          <div class="review-image">
+            <img src="client2.png" alt="Customer Image" />
+          </div>
+          <div class="review-content">
+            <h3>Jennie Ortega</h3>
+            <p>"BookHub has the best selection of books I've ever seen! Their customer service is excellent and I always find what I need."</p>
+          </div>
+        </div>
+
+        <div class="review">
+          <div class="review-image">
+            <img src="client1.jpeg" alt="Customer Image" />
+          </div>
+          <div class="review-content">
+            <h3>Sarah khan</h3>
+            <p>"I love shopping at BookHub! They have a cozy atmosphere, and I can spend hours browsing. Highly recommended!"</p>
+          </div>
+        </div>
+
+        <div class="review">
+          <div class="review-image">
+            <img src="client3.png" alt="Customer Image" />
+          </div>
+          <div class="review-content">
+            <h3>Emily Johnson</h3>
+            <p>"The browsing site is extremely helpful! They always know exactly what I'm looking for and their recommendations are spot on!"</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="subscription-box" id="subscription-box">
+      <h3>Join Our Community</h3>
+      <p>Subscribe to get updates and special offers!</p>
+      <input type="email" id="email" placeholder="Enter your email" required />
+      <button type="button" onclick="subscribe()">Subscribe</button>
+      <p id="subscription-message"></p>
+    </div>
+
+    <div class="popup" id="popup" style="display: none">
+      <h4>Thanks for Subscribing!</h4>
+      <button onclick="closePopup()">Close</button>
+    </div>
+    <footer>
+      <p>&copy; 2024 BookHub - THE BOOKSTORE</p>
+    </footer>
+
+    <script src="index.js"></script>
+  </body>
+</html>

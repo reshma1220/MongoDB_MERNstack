@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History</title>
+    <link rel="stylesheet" href="index.css">
+
+</head>
+<body>
+    <div class="header">
+        <b>Order History</b> 
+    </div>
+
+    <div class="order-history-section" id="orderHistorySection">
+        <h2>Your Past Orders</h2>
+        <!-- Order details will be populated here -->
+    </div>
+
+    <div class="home-button">
+        <button class="button" onclick="goHome()">Back to Home</button>
+    </div>
+
+    <script>
+        // Simulated order history data (replace with actual data retrieval)
+        const orderHistory = [
+            {
+                title: "The Great Gatsby",
+                orderId: "ORD123456",
+                totalAmount: 15.99,
+                date: new Date('2024-09-01')
+            },
+            {
+                title: "To Kill a Mockingbird",
+                orderId: "ORD123457",
+                totalAmount: 12.50,
+                date: new Date('2024-09-10')
+            },
+            {
+                title: "1984",
+                orderId: "ORD123458",
+                totalAmount: 14.99,
+                date: new Date('2024-09-15')
+            }
+        ];
+
+        const orderHistorySection = document.getElementById('orderHistorySection');
+
+        // Display each order in the order history
+        if (orderHistory.length > 0) {
+            orderHistory.forEach(order => {
+                const orderDiv = document.createElement('div');
+                orderDiv.classList.add('order');
+                orderDiv.innerHTML = `
+                    <p class="book-title">${order.title}</p>
+                    <p>Order ID: ${order.orderId}</p>
+                    <p>Total Amount: $${order.totalAmount.toFixed(2)}</p>
+                    <p>Date: ${new Date(order.date).toLocaleDateString()}</p>
+                `;
+                orderHistorySection.appendChild(orderDiv);
+            });
+        } else {
+            orderHistorySection.innerHTML = '<p>No past orders found.</p>';
+        }
+
+        function goHome() {
+            window.location.href = 'index.html'; // Redirect to homepage
+        }
+    </script>
+</body>
+</html>

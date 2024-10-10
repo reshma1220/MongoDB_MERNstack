@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category Books</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<header>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="index.html">BookHub</a>
+        </div> 
+    </nav>
+</header>        
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5e7cf;
+            margin: 0;
+            padding: 20px;
+        }
+        .header {
+            background-color: #8b4513;
+            color: white;
+            text-align: center;
+            padding: 1em 0;
+            font-size: 2em;
+        }
+        .book-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 50px;
+        }
+        .book-category {
+            background: linear-gradient(135deg, #b8ca99, #44633e); 
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 200px;
+        }
+        .book-category img {
+            width: 100px;
+            height: 150px;
+            object-fit: cover;
+        }
+        .book-category h3 {
+            color: #8b4513;
+        }
+        .add-to-cart {
+            background-color: #d2691e;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .add-to-cart:hover {
+            background-color: #8b4513;
+        }
+        .cart {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #d2691e;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 2px solid #8b4513;
+            padding: 20px;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .popup h3 {
+            margin: 0;
+            color: #8b4513;
+        }
+        .popup button {
+            background-color: #d2691e;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .popup button:hover {
+            background-color: #8b4513;
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+    </style>
+</header>
+<body>
+    <div class="header" id="categoryHeader">
+        Category
+    </div>
+
+    <div class="cart">
+        Cart:<a href="cart.html"><span id="cart-count">0</span> items</a>
+    </div>
+
+    <div class="book-section" id="bookSection"></div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="popup">
+        <h3>Your item has been added to the cart!</h3>
+        <button onclick="closePopup()">OK</button>
+    </div>
+
+    <script>
+        // Get the query parameter from URL
+        const params = new URLSearchParams(window.location.search);
+        const category = params.get('category');
+
+        // Define books by category with 15 books each
+        const books = {
+            fiction: [
+                { title: "Fiction Book 1", img: "images/fiction1.jpg", price: 10 },
+                { title: "Fiction Book 2", img: "images/fiction2.jpg", price: 12 },
+                { title: "Fiction Book 3", img: "images/fiction3.jpg", price: 15 },
+                { title: "Fiction Book 4", img: "images/fiction4.jpg", price: 8 },
+                { title: "Fiction Book 5", img: "images/fiction5.jpg", price: 9 },
+                { title: "Fiction Book 6", img: "images/fiction6.jpg", price: 14 },
+                { title: "Fiction Book 7", img: "images/fiction7.jpg", price: 11 },
+                { title: "Fiction Book 8", img: "images/fiction8.jpg", price: 13 },
+                { title: "Fiction Book 9", img: "images/fiction9.jpg", price: 7 },
+                { title: "Fiction Book 10", img: "images/fiction10.jpg", price: 6 }
+            ],
+            nonfiction: [
+                { title: "Non-Fiction Book 1", img: "images/nonfiction1.jpg", price: 18 },
+                { title: "Non-Fiction Book 2", img: "images/nonfiction2.jpg", price: 20 },
+                { title: "Non-Fiction Book 3", img: "images/nonfiction3.jpg", price: 22 },
+                { title: "Non-Fiction Book 4", img: "images/nonfiction4.jpg", price: 15 },
+                { title: "Non-Fiction Book 5", img: "images/nonfiction5.jpg", price: 17 },
+                { title: "Non-Fiction Book 6", img: "images/nonfiction6.jpg", price: 19 },
+                { title: "Non-Fiction Book 7", img: "images/nonfiction7.jpg", price: 21 },
+                { title: "Non-Fiction Book 8", img: "images/nonfiction8.jpg", price: 16 },
+                { title: "Non-Fiction Book 9", img: "images/nonfiction9.jpg", price: 24 },
+                { title: "Non-Fiction Book 10", img: "images/nonfiction10.jpg", price: 25 }
+            ],
+            comics: [
+                { title: "Comic Book 1", img: "images/comic1.jpg", price: 5 },
+                { title: "Comic Book 2", img: "images/comic2.jpg", price: 6 },
+                { title: "Comic Book 3", img: "images/comic3.jpg", price: 7 },
+                { title: "Comic Book 4", img: "images/comic4.jpg", price: 8 },
+                { title: "Comic Book 5", img: "images/comic5.jpg", price: 9 },
+                { title: "Comic Book 6", img: "images/comic6.jpg", price: 10 },
+                { title: "Comic Book 7", img: "images/comic7.jpg", price: 11 },
+                { title: "Comic Book 8", img: "images/comic8.jpg", price: 12 },
+                { title: "Comic Book 9", img: "images/comic9.jpg", price: 13 },
+                { title: "Comic Book 10", img: "images/comic10.jpg", price: 14 }
+            ],
+            children: [
+                { title: "Children's Book 1", img: "images/children1.jpg", price: 4 },
+                { title: "Children's Book 2", img: "images/children2.jpg", price: 5 },
+                { title: "Children's Book 3", img: "images/children3.jpg", price: 6 },
+                { title: "Children's Book 4", img: "images/children4.jpg", price: 7 },
+                { title: "Children's Book 5", img: "images/children5.jpg", price: 8 },
+                { title: "Children's Book 6", img: "images/children6.jpg", price: 9 },
+                { title: "Children's Book 7", img: "images/children7.jpg", price: 10 },
+                { title: "Children's Book 8", img: "images/children8.jpg", price: 11 },
+                { title: "Children's Book 9", img: "images/children9.jpg", price: 12 },
+                { title: "Children's Book 10", img: "images/children10.jpg", price: 13 }
+            ],
+            education: [
+                { title: "Educational Book 1", img: "images/education1.jpg", price: 15 },
+                { title: "Educational Book 2", img: "images/education2.jpg", price: 16 },
+                { title: "Educational Book 3", img: "images/education3.jpg", price: 17 },
+                { title: "Educational Book 4", img: "images/education4.jpg", price: 18 },
+                { title: "Educational Book 5", img: "images/education5.jpg", price: 19 },
+                { title: "Educational Book 6", img: "images/education6.jpg", price: 20 },
+                { title: "Educational Book 7", img: "images/education7.jpg", price: 21 },
+                { title: "Educational Book 8", img: "images/education8.jpg", price: 22 },
+                { title: "Educational Book 9", img: "images/education9.jpg", price: 23 },
+                { title: "Educational Book 10", img: "images/education10.jpg", price: 24 }
+            ]
+        };
+
+        // Select the relevant category
+        const selectedBooks = books[category];
+
+        if (!selectedBooks) {
+            document.getElementById('bookSection').innerHTML = '<p>No books found in this category.</p>';
+        } else {
+            // Set header text
+            document.getElementById('categoryHeader').innerText = category.charAt(0).toUpperCase() + category.slice(1) + " Books";
+
+            // Display books in the selected category
+            const bookSection = document.getElementById('bookSection');
+            selectedBooks.forEach(book => {
+                const bookDiv = document.createElement('div');
+                bookDiv.classList.add('book-category');
+                bookDiv.innerHTML = `
+                    <img src="${book.img}" alt="${book.title}">
+                    <h3>${book.title}</h3>
+                    <p>Price: $${book.price}</p>
+                    <button class="add-to-cart" onclick="addToCart('${book.title}', ${book.price}, '${book.img}')">Add to Cart</button>
+                `;
+                bookSection.appendChild(bookDiv);
+            });
+        }
+
+        // Initialize or fetch the cart
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Updated addToCart function
+        function addToCart(title, price, img) {
+            const existingItem = cart.find(item => item.title === title);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ title, price, img, quantity: 1 });
+            }
+
+            // Save updated cart to localStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            // Update the cart count immediately
+            updateCartCount();
+
+            // Show popup message
+            showPopup();
+        }
+
+        // Function to show the popup
+        function showPopup() {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        // Function to close the popup
+        function closePopup() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        // Function to update the cart count
+        function updateCartCount() {
+            const cartCountElement = document.getElementById('cart-count');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCountElement.innerText = totalItems;
+        }
+
+        // Update cart count on page load
+        updateCartCount();
+    </script>
+</body>
+</html>

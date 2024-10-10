@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register or Login</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">BookHub</a>
+            </div>
+            <ul class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="register.html">Register</a>
+                <a href="cart.html">Cart<span id="cart-count"> </span></a>
+                <a href="order-history.html">My Order</a>
+            </ul> 
+            </nav>
+    </header> 
+            <div class="header-section">
+                <h3>Register Here!</h3>
+            </div>  
+
+
+   <section class="registration">
+        <h2>Create an Account</h2>
+        <form id="register-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Register</button>
+        </form>
+        <div id="message" style="display:none;"></div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 BookHub- the Bookstore</p>
+    </footer>
+
+
+    <script src="index.js"></script>
+       
+</body>
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color:  #000000;
+            color: #faf4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #000000;
+            color: white;
+            padding: 1rem;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo a {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .header-section {
+            text-align: center;
+            padding: 2rem 0;
+            background: linear-gradient(135deg, #26351b, #c4e0b4);
+        }
+
+        .header-section h3 {
+            font-size: 2rem;
+            color: #ffffff;
+        }
+
+        .cart {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .total-books {
+            background-color: #608f5a;
+            color: rgb(255, 255, 255);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .book-section {
+            max-width: 1300px;
+            margin: 1 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem;
+        }
+
+        .book-category {
+            background: linear-gradient(135deg, #b8ca99, #44633e); 
+            padding: 1rem;
+            border: 1px solid #e0d4c3;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .book-category img {
+            max-width: 95%;
+            height: auto;
+            margin-bottom: 1rem;
+        }
+
+        .book-category h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+            color: #0f0f0f;
+        }
+
+        .book-category p {
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .add-to-cart {
+            background-color: #608f5a;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background-color: #83a161;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup {
+            display: none;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            z-index: 1001;
+        }
+
+        .popup h3 {
+            margin-bottom: 1rem;
+            color: #4c7442;
+        }
+
+        .popup button {
+            background-color: #90c98e;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .popup button:hover {
+            background-color: #7a9170;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #000000;
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">BookHub</a>
+            </div>
+            <ul class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="register.html">Register</a>
+                <a href="cart.html">Cart<span id="cart-count">()</span></a>
+                <a href="order-history.html">My Order</a>
+            </ul> 
+        </nav>
+    </header>
+    <div class="header-section">
+        <h3>My Cart</h3>
+    </div>  
+
+    <div class="cart">
+        Total No.Of Books You Added: <button class="total-books" id="totalBooksButton">0</button> 
+    </div>
+
+    <div class="book-section" id="bookSection"></div>
+
+    <div class="button-container">
+        <button onclick="clearCart()" class="add-to-cart" id="clearCartButton">Clear Cart</button>
+        <button onclick="proceedToCheckout()" class="add-to-cart" id="checkoutButton">Proceed to Checkout</button>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="popup">
+        <h3>Your item has been added to the cart!</h3>
+        <button onclick="closePopup()">OK</button>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 BookHub - the Bookstore</p>
+    </footer>
+
+    <script>
+        // Initialize or fetch the cart
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Function to display books in the cart
+        function displayCart() {
+            const bookSection = document.getElementById('bookSection');
+            bookSection.innerHTML = '';
+            if (cart.length === 0) {
+                bookSection.innerHTML = '<p>Your cart is empty.</p>';
+            } else {
+                cart.forEach(item => {
+                    const bookDiv = document.createElement('div');
+                    bookDiv.classList.add('book-category');
+                    bookDiv.innerHTML = `
+                        <img src="${item.img}" alt="${item.title}">
+                        <h3>${item.title}</h3>
+                        <p>Price: $${item.price}</p>
+                        <p>Quantity: ${item.quantity}</p>
+                    `;
+                    bookSection.appendChild(bookDiv);
+                });
+            }
+            updateTotalBooks();
+        }
+
+        // Function to update the total number of books
+        function updateTotalBooks() {
+            const totalBooksButton = document.getElementById('totalBooksButton');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            totalBooksButton.innerText = totalItems;
+        }
+
+        // Function to clear the cart
+        function clearCart() {
+            cart = [];
+            localStorage.removeItem('cart');
+            displayCart();
+        }
+
+        // Function to proceed to checkout
+        function proceedToCheckout() {
+            window.location.href = 'myorders.html'; // Change to your orders page URL
+        }
+
+        // Function to show the popup
+        function showPopup() {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        // Function to close the popup
+        function closePopup() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        // Display cart items on page load
+        displayCart();
+    </script>
+</body>
+</html>
